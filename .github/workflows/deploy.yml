@@ -3,7 +3,7 @@ name: "Terraform Deploy"
 on:
   push:
     tags:
-      - "v[1-9]*"
+      - "v*"
 
 jobs:
   validar:
