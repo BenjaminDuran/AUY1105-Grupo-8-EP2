@@ -53,9 +53,9 @@ resource "aws_subnet" "public" {
   #checkov:skip=CKV_AWS_130:Arquitectura del curso requiere instancias en subnet publica con IP publica
   count = length(var.public_subnet_cidrs)
 
-  vpc_id            = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # Asigna el CIDR correspondiente a cada subred según su índice
-  cidr_block        = var.public_subnet_cidrs[count.index]
+  cidr_block = var.public_subnet_cidrs[count.index]
   # Asigna una AZ distinta a cada subred
   availability_zone = data.aws_availability_zones.available.names[count.index]
   # Hace que las instancias en esta subred obtengan IP pública automáticamente
@@ -130,4 +130,54 @@ resource "aws_route_table_association" "public" {
 
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
+}
+
+# 7. Security Group de servidores
+# Acceso web (HTTP) y SSH entrante; egreso web para repositorios/paquetes.
+resource "aws_security_group" "servers" {
+  #checkov:skip=CKV_AWS_24:Puerto 22 habilitado para acceso SSH directo - SSM no disponible en AWS Learner Lab
+  #checkov:skip=CKV2_AWS_5:El SG se adjunta a la instancia EC2 via output del modulo redes y el modulo compute; Checkov no rastrea el grafo entre modulos
+  name        = "${var.project_name}-servers-sg"
+  description = "Security Group para servidores con acceso SSH y egreso web"
+  vpc_id      = aws_vpc.main.id
+
+  # Tráfico web (Nginx)
+  ingress {
+    #checkov:skip=CKV_AWS_260:Puerto 80 habilitado para todo el publico, para verificar pagina web
+    description = "Acceso HTTP publico"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH publico - requerido en Learner Lab (SSM no disponible)"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTPS - repositorios seguros
+  egress {
+    description = "Permite trafico HTTPS saliente"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # HTTP - repositorios de paquetes
+  egress {
+    description = "Permite trafico HTTP saliente"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "AUY1105-${var.project_name}-servers-sg"
+  }
 }
