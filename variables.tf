@@ -30,4 +30,5 @@ variable "instance_count_app1" {
 variable "key_name" {
   description = "Nombre del Key Pair de AWS para acceso SSH a las instancias"
   type        = string
+  default     = "vockey" # Key Pair estándar del AWS Learner Lab
 }
