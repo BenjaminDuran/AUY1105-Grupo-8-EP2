@@ -67,8 +67,8 @@ locals {
     apt-get install -y nginx git
     systemctl start nginx
     systemctl enable nginx
-    git clone --depth 1 https://github.com/GMG-bit/AUY1105-Grupo-8.git /tmp/repo
-    cp -r "/tmp/repo/Sitio Generico/html/." /var/www/html/
+    git clone --depth 1 https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2.git /tmp/repo
+    cp -r "/tmp/repo/Sitio Generico/Sitio Generico/html/." /var/www/html/
     rm -rf /tmp/repo
   EOF
 }
