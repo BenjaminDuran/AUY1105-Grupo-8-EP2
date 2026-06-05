@@ -153,9 +153,10 @@ Configurar en **Settings → Secrets and variables → Actions**:
 | `AWS_ACCESS_KEY_ID` | Secret | Credencial del Learner Lab |
 | `AWS_SECRET_ACCESS_KEY` | Secret | Credencial del Learner Lab |
 | `AWS_SESSION_TOKEN` | Secret | Token de sesión del Learner Lab |
-| `TF_STATE_BUCKET` | Secret | Nombre del bucket S3 para el estado |
-| `KEY_PAIR_NAME` | Secret | Nombre del Key Pair (`vockey`) |
+| `TF_STATE_BUCKET` | Variable | Nombre del bucket S3 para el estado |
 | `PROJECT_NAME` | Variable | Nombre del proyecto (ej. `grupo8`) |
+
+> El Key Pair usa el valor por defecto `vockey` (variable `key_name`), estándar del AWS Learner Lab, por lo que no requiere secreto.
 
 ### Despliegue por tag
 
