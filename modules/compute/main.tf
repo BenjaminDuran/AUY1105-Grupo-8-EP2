@@ -1,22 +1,3 @@
-variable "project_name" {}
-variable "subnet_id" { description = "ID de la subred donde se alojará la instancia" }
-variable "security_group_ids" { type = list(string) }
-
-variable "os_type" {
-  description = "Sistema Operativo: 'linux'"
-  type        = string
-}
-
-variable "instance_count" {
-  description = "Cantidad de instancias a crear"
-  type        = number
-}
-
-variable "key_name" {
-  description = "Nombre del Key Pair de AWS para acceso SSH"
-  type        = string
-}
-
 # --- 1. Selección de AMI ---
 
 # Buscar la última AMI de Ubuntu 24.04 LTS (Noble)
@@ -36,14 +17,14 @@ resource "aws_instance" "server" {
   #checkov:skip=CKV_AWS_135:La politica OPA del proyecto exige t2.micro, el cual no soporta EBS optimization
   count = var.instance_count
 
-  ami                  = data.aws_ami.ubuntu.id
-  instance_type        = "t2.micro"
-  subnet_id            = var.subnet_id
-  key_name             = var.key_name
-  monitoring           = true
-  iam_instance_profile = "LabInstanceProfile"
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t2.micro"
+  subnet_id              = var.subnet_id
+  key_name               = var.key_name
+  monitoring             = true
+  iam_instance_profile   = "LabInstanceProfile"
   vpc_security_group_ids = var.security_group_ids
-  user_data = local.user_data_linux
+  user_data              = local.user_data_linux
   # Fuerza IMDSv2 (deshabilita IMDSv1)
   metadata_options {
     http_endpoint = "enabled"
