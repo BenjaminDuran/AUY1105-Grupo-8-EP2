@@ -41,10 +41,18 @@ resource "aws_security_group" "example" {
   }
 
   egress {
-    description = "Todo el egreso"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    description = "HTTPS saliente"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "HTTP saliente"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
