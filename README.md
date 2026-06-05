@@ -1,12 +1,12 @@
-# AUY1105-Grupo-8
+# AUY1105-Grupo-8 — EP2
 
-[![CI](https://img.shields.io/github/actions/workflow/status/GMG-bit/AUY1105-Grupo-8/main.yml?branch=main&label=CI&logo=github)](https://github.com/GMG-bit/AUY1105-Grupo-8/actions/workflows/main.yml)
-[![Deploy](https://img.shields.io/github/actions/workflow/status/GMG-bit/AUY1105-Grupo-8/deploy.yml?label=Deploy&logo=github)](https://github.com/GMG-bit/AUY1105-Grupo-8/actions/workflows/deploy.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/BenjaminDuran/AUY1105-Grupo-8-EP2/main.yml?branch=main&label=CI&logo=github)](https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2/actions/workflows/main.yml)
+[![Deploy](https://img.shields.io/github/actions/workflow/status/BenjaminDuran/AUY1105-Grupo-8-EP2/deploy.yml?label=Deploy&logo=github)](https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2/actions/workflows/deploy.yml)
 [![Terraform](https://img.shields.io/badge/Terraform-%3E%3D%201.0.0-623CE4?logo=terraform)](https://www.terraform.io/)
 [![AWS Provider](https://img.shields.io/badge/AWS%20Provider-~%3E%206.0-FF9900?logo=amazon-aws)](https://registry.terraform.io/providers/hashicorp/aws/latest)
 [![Licencia](https://img.shields.io/badge/Licencia-GPLv3-blue)](LICENSE)
 
-Infraestructura como Código (IaC) con Terraform para el despliegue automatizado de una VPC, instancias EC2 con Nginx y VPC Flow Logs en AWS, desarrollada como parte de la Evaluación Parcial N°1 de la asignatura **AUY1105 – Infraestructura como Código II**.
+Infraestructura como Código (IaC) con Terraform para el despliegue automatizado de una VPC, instancias EC2 con Nginx y VPC Flow Logs en AWS, organizada en módulos reutilizables (`vpc` y `compute`), desarrollada como parte de la Evaluación Parcial N°2 de la asignatura **AUY1105 – Infraestructura como Código II**.
 
 ## Características principales
 
@@ -30,8 +30,8 @@ Infraestructura como Código (IaC) con Terraform para el despliegue automatizado
 Clonar el repositorio e inicializar Terraform apuntando al bucket S3 de estado:
 
 ```bash
-git clone https://github.com/GMG-bit/AUY1105-Grupo-8.git
-cd AUY1105-Grupo-8
+git clone https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2.git
+cd AUY1105-Grupo-8-EP2
 
 terraform init \
   -backend-config="bucket=NOMBRE_DEL_BUCKET" \
@@ -94,7 +94,7 @@ terraform destroy \
 | `vpc_cidr_block` | CIDR de la VPC | `string` | `10.1.0.0/16` |
 | `public_subnet_cidrs` | CIDRs de las subredes públicas | `list(string)` | `["10.1.1.0/24", "10.1.2.0/24"]` |
 | `instance_count_app1` | Cantidad de instancias EC2 | `number` | `1` |
-| `key_name` | Nombre del Key Pair para SSH | `string` | — |
+| `key_name` | Nombre del Key Pair para SSH | `string` | `vockey` |
 
 ## Outputs
 
@@ -115,16 +115,22 @@ terraform destroy \
 ├── modules/
 │   ├── vpc/
 │   │   ├── main.tf       # VPC, subredes, IGW, tabla de rutas, Flow Logs + KMS
+│   │   ├── variables.tf
 │   │   ├── outputs.tf
-│   │   └── variables.tf
+│   │   ├── versions.tf   # Versiones requeridas de Terraform y proveedor AWS
+│   │   ├── README.md     # Documentación del módulo
+│   │   └── examples/     # Ejemplo funcional de uso del módulo
 │   └── compute/
 │       ├── main.tf       # Instancia EC2, AMI Ubuntu 24.04, user_data con Nginx
+│       ├── variables.tf
 │       ├── outputs.tf
-│       └── variables.tf
+│       ├── versions.tf   # Versiones requeridas de Terraform y proveedor AWS
+│       ├── README.md     # Documentación del módulo
+│       └── examples/     # Ejemplo funcional de uso del módulo
 ├── policies/
 │   ├── terraform_security.rego       # Reglas OPA
 │   └── terraform_security_test.rego  # Pruebas unitarias de las políticas
-├── Sitio Generico/html/  # Sitio HTML estático desplegado en Nginx
+├── Sitio Generico/Sitio Generico/html/  # Sitio HTML estático desplegado en Nginx
 ├── backend.tf            # Configuración del backend S3
 ├── main.tf               # Orquestación: VPC, Security Group, módulo compute
 ├── variables.tf          # Variables globales
