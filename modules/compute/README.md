@@ -27,7 +27,7 @@ module "compute" {
 
   project_name       = "grupo8"
   subnet_id          = module.vpc.public_subnet_ids[0]
-  security_group_ids = [aws_security_group.servers_sg.id]
+  security_group_ids = [module.vpc.servers_security_group_id]
   os_type            = "linux"
   instance_count     = 1
   key_name           = "vockey"

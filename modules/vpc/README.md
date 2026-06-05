@@ -1,6 +1,6 @@
 # Módulo Terraform — VPC
 
-Módulo reutilizable que crea la capa de red base en AWS: una VPC, subredes públicas en distintas zonas de disponibilidad, Internet Gateway, tabla de rutas y VPC Flow Logs cifrados con KMS.
+Módulo reutilizable que crea la capa de red base en AWS: una VPC, subredes públicas en distintas zonas de disponibilidad, Internet Gateway, tabla de rutas, el security group de servidores y VPC Flow Logs cifrados con KMS.
 
 ## Objetivo
 
@@ -8,7 +8,7 @@ Desacoplar la creación de la red para poder reutilizarla en cualquier proyecto 
 
 ## Propósito
 
-Provee los identificadores de red (`vpc_id`, `public_subnet_ids`) que consumen otros módulos —como el de cómputo— para desplegar recursos dentro de la VPC.
+Provee los identificadores de red (`vpc_id`, `public_subnet_ids`, `servers_security_group_id`) que consumen otros módulos —como el de cómputo— para desplegar recursos dentro de la VPC.
 
 ## Recursos creados
 
@@ -16,6 +16,7 @@ Provee los identificadores de red (`vpc_id`, `public_subnet_ids`) que consumen o
 - `aws_default_security_group` bloqueado (sin reglas).
 - `aws_internet_gateway` y `aws_route_table` pública con ruta `0.0.0.0/0`.
 - `aws_subnet` públicas (una por CIDR entregado) con IP pública automática.
+- `aws_security_group` de servidores: HTTP (80) y SSH (22) entrantes, egreso web (443/80).
 - `aws_flow_log` + `aws_cloudwatch_log_group` + `aws_kms_key` para auditoría de tráfico.
 
 ## Uso
@@ -46,6 +47,7 @@ Ver un ejemplo funcional completo en [`examples/`](./examples/).
 |---|---|
 | `vpc_id` | ID de la VPC creada. |
 | `public_subnet_ids` | Lista de IDs de las subredes públicas creadas. |
+| `servers_security_group_id` | ID del Security Group de servidores. |
 
 ## Dependencias
 
