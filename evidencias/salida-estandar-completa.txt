@@ -1,0 +1,2645 @@
+================================================================
+ AUY1105 - Evaluacion Parcial 3 - Grupo 8
+ Salida estandar (stdout) de todos los comandos ejecutados
+ Generado: 2026-07-02 22:33
+================================================================
+
+
+################################################################
+# 00-init
+################################################################
+Initializing the backend...
+Initializing modules...
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/aws v6.42.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+
+
+################################################################
+# 01-apply
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.app1_linux_compute.aws_instance.server[0] will be created
+  + resource "aws_instance" "server" {
+      + ami                                  = "ami-0a02a779008fa3b99"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = "LabInstanceProfile"
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "vockey"
+      + monitoring                           = true
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Environment" = "lab"
+          + "Name"        = "AUY1105-grupo8-ec2"
+          + "OS_Type"     = "linux"
+        }
+      + tags_all                             = {
+          + "Environment" = "lab"
+          + "Name"        = "AUY1105-grupo8-ec2"
+          + "OS_Type"     = "linux"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt-get update -y
+            apt-get install -y nginx git
+            systemctl start nginx
+            systemctl enable nginx
+            git clone --depth 1 https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2.git /tmp/repo
+            cp -r "/tmp/repo/Sitio Generico/Sitio Generico/html/." /var/www/html/
+            rm -rf /tmp/repo
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = "disabled"
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = "required"
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = true
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # module.vpc.aws_cloudwatch_log_group.vpc_flow_logs will be created
+  + resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+      + arn                         = (known after apply)
+      + deletion_protection_enabled = (known after apply)
+      + id                          = (known after apply)
+      + kms_key_id                  = (known after apply)
+      + log_group_class             = (known after apply)
+      + name                        = "/aws/vpc/grupo8-flow-logs"
+      + name_prefix                 = (known after apply)
+      + region                      = "us-east-1"
+      + retention_in_days           = 365
+      + skip_destroy                = false
+      + tags_all                    = (known after apply)
+    }
+
+  # module.vpc.aws_default_security_group.default will be created
+  + resource "aws_default_security_group" "default" {
+      + arn                    = (known after apply)
+      + description            = (known after apply)
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "AUY1105-grupo8-default-sg"
+        }
+      + tags_all               = {
+          + "Name" = "AUY1105-grupo8-default-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_flow_log.main will be created
+  + resource "aws_flow_log" "main" {
+      + arn                      = (known after apply)
+      + iam_role_arn             = "arn:aws:iam::519837495726:role/LabRole"
+      + id                       = (known after apply)
+      + log_destination          = (known after apply)
+      + log_destination_type     = "cloud-watch-logs"
+      + log_format               = (known after apply)
+      + max_aggregation_interval = 600
+      + region                   = "us-east-1"
+      + tags_all                 = (known after apply)
+      + traffic_type             = "ALL"
+      + vpc_id                   = (known after apply)
+    }
+
+  # module.vpc.aws_internet_gateway.igw will be created
+  + resource "aws_internet_gateway" "igw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + region   = "us-east-1"
+      + tags     = {
+          + "Name" = "AUY1105-grupo8-igw"
+        }
+      + tags_all = {
+          + "Name" = "AUY1105-grupo8-igw"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.vpc.aws_kms_key.vpc_flow_logs will be created
+  + resource "aws_kms_key" "vpc_flow_logs" {
+      + arn                                = (known after apply)
+      + bypass_policy_lockout_safety_check = false
+      + customer_master_key_spec           = "SYMMETRIC_DEFAULT"
+      + deletion_window_in_days            = 7
+      + description                        = "KMS key para encriptar VPC Flow Logs"
+      + enable_key_rotation                = true
+      + id                                 = (known after apply)
+      + is_enabled                         = true
+      + key_id                             = (known after apply)
+      + key_usage                          = "ENCRYPT_DECRYPT"
+      + multi_region                       = (known after apply)
+      + policy                             = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "kms:*"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "arn:aws:iam::519837495726:root"
+                        }
+                      + Resource  = "*"
+                      + Sid       = "Enable IAM User Permissions"
+                    },
+                  + {
+                      + Action    = [
+                          + "kms:Encrypt",
+                          + "kms:Decrypt",
+                          + "kms:ReEncrypt*",
+                          + "kms:GenerateDataKey*",
+                          + "kms:DescribeKey",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "logs.us-east-1.amazonaws.com"
+                        }
+                      + Resource  = "*"
+                      + Sid       = "Allow CloudWatch Logs"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + region                             = "us-east-1"
+      + rotation_period_in_days            = (known after apply)
+      + tags_all                           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.public will be created
+  + resource "aws_route_table" "public" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + gateway_id                 = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name" = "AUY1105-grupo8-public-rt"
+        }
+      + tags_all         = {
+          + "Name" = "AUY1105-grupo8-public-rt"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.public[0] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.public[1] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_security_group.servers will be created
+  + resource "aws_security_group" "servers" {
+      + arn                    = (known after apply)
+      + description            = "Security Group para servidores con acceso SSH y egreso web"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Permite trafico HTTP saliente"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Permite trafico HTTPS saliente"
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 443
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Acceso HTTP publico"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "SSH publico - requerido en Learner Lab (SSM no disponible)"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "grupo8-servers-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "AUY1105-grupo8-servers-sg"
+        }
+      + tags_all               = {
+          + "Name" = "AUY1105-grupo8-servers-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.public[0] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.1.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Name" = "AUY1105-grupo8-public-subnet-1"
+        }
+      + tags_all                                       = {
+          + "Name" = "AUY1105-grupo8-public-subnet-1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.public[1] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.1.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Name" = "AUY1105-grupo8-public-subnet-2"
+        }
+      + tags_all                                       = {
+          + "Name" = "AUY1105-grupo8-public-subnet-2"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_vpc.main will be created
+  + resource "aws_vpc" "main" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.1.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags                                 = {
+          + "Name" = "AUY1105-grupo8-vpc"
+        }
+      + tags_all                             = {
+          + "Name" = "AUY1105-grupo8-vpc"
+        }
+    }
+
+Plan: 13 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + app1_linux_ips    = [
+      + (known after apply),
+    ]
+  + public_subnet_ids = [
+      + (known after apply),
+      + (known after apply),
+    ]
+  + url_sitio_web     = [
+      + (known after apply),
+    ]
+  + vpc_id            = (known after apply)
+module.vpc.aws_kms_key.vpc_flow_logs: Creating...
+module.vpc.aws_vpc.main: Creating...
+module.vpc.aws_vpc.main: Creation complete after 3s [id=vpc-0135925743de0929d]
+module.vpc.aws_internet_gateway.igw: Creating...
+module.vpc.aws_subnet.public[1]: Creating...
+module.vpc.aws_subnet.public[0]: Creating...
+module.vpc.aws_default_security_group.default: Creating...
+module.vpc.aws_security_group.servers: Creating...
+module.vpc.aws_internet_gateway.igw: Creation complete after 2s [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_route_table.public: Creating...
+module.vpc.aws_default_security_group.default: Creation complete after 3s [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_route_table.public: Creation complete after 2s [id=rtb-0ba9b74dd4d8befa2]
+module.vpc.aws_security_group.servers: Creation complete after 4s [id=sg-01efa5c526c4b0180]
+module.vpc.aws_kms_key.vpc_flow_logs: Still creating... [00m10s elapsed]
+module.vpc.aws_kms_key.vpc_flow_logs: Creation complete after 10s [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Creating...
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Creation complete after 2s [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_flow_log.main: Creating...
+module.vpc.aws_flow_log.main: Creation complete after 0s [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[0]: Still creating... [00m10s elapsed]
+module.vpc.aws_subnet.public[1]: Still creating... [00m10s elapsed]
+module.vpc.aws_subnet.public[0]: Creation complete after 12s [id=subnet-0ba39211c155ac664]
+module.vpc.aws_subnet.public[1]: Creation complete after 13s [id=subnet-09d49498013811c10]
+module.vpc.aws_route_table_association.public[1]: Creating...
+module.vpc.aws_route_table_association.public[0]: Creating...
+module.app1_linux_compute.aws_instance.server[0]: Creating...
+module.vpc.aws_route_table_association.public[0]: Creation complete after 0s [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Creation complete after 1s [id=rtbassoc-0966f6a7af84a5641]
+module.app1_linux_compute.aws_instance.server[0]: Still creating... [00m10s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Still creating... [00m20s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Still creating... [00m30s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Creation complete after 34s [id=i-08f3be98e5cfdca60]
+
+Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+app1_linux_ips = [
+  "54.242.188.191",
+]
+public_subnet_ids = [
+  "subnet-0ba39211c155ac664",
+  "subnet-09d49498013811c10",
+]
+url_sitio_web = [
+  "http://54.242.188.191",
+]
+vpc_id = "vpc-0135925743de0929d"
+
+
+################################################################
+# 02-state-list
+################################################################
+module.app1_linux_compute.data.aws_ami.ubuntu
+module.app1_linux_compute.aws_instance.server[0]
+module.vpc.data.aws_availability_zones.available
+module.vpc.data.aws_caller_identity.current
+module.vpc.data.aws_iam_role.lab_role
+module.vpc.data.aws_region.current
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs
+module.vpc.aws_default_security_group.default
+module.vpc.aws_flow_log.main
+module.vpc.aws_internet_gateway.igw
+module.vpc.aws_kms_key.vpc_flow_logs
+module.vpc.aws_route_table.public
+module.vpc.aws_route_table_association.public[0]
+module.vpc.aws_route_table_association.public[1]
+module.vpc.aws_security_group.servers
+module.vpc.aws_subnet.public[0]
+module.vpc.aws_subnet.public[1]
+module.vpc.aws_vpc.main
+
+
+################################################################
+# 02b-output
+################################################################
+app1_linux_ips = [
+  "54.242.188.191",
+]
+public_subnet_ids = [
+  "subnet-0ba39211c155ac664",
+  "subnet-09d49498013811c10",
+]
+url_sitio_web = [
+  "http://54.242.188.191",
+]
+vpc_id = "vpc-0135925743de0929d"
+
+
+################################################################
+# 03-plan-sin-estado
+################################################################
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.app1_linux_compute.aws_instance.server[0] will be created
+  + resource "aws_instance" "server" {
+      + ami                                  = "ami-0a02a779008fa3b99"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = "LabInstanceProfile"
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "vockey"
+      + monitoring                           = true
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Environment" = "lab"
+          + "Name"        = "AUY1105-grupo8-ec2"
+          + "OS_Type"     = "linux"
+        }
+      + tags_all                             = {
+          + "Environment" = "lab"
+          + "Name"        = "AUY1105-grupo8-ec2"
+          + "OS_Type"     = "linux"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt-get update -y
+            apt-get install -y nginx git
+            systemctl start nginx
+            systemctl enable nginx
+            git clone --depth 1 https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2.git /tmp/repo
+            cp -r "/tmp/repo/Sitio Generico/Sitio Generico/html/." /var/www/html/
+            rm -rf /tmp/repo
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = "disabled"
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = "required"
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = true
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # module.vpc.aws_cloudwatch_log_group.vpc_flow_logs will be created
+  + resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+      + arn                         = (known after apply)
+      + deletion_protection_enabled = (known after apply)
+      + id                          = (known after apply)
+      + kms_key_id                  = (known after apply)
+      + log_group_class             = (known after apply)
+      + name                        = "/aws/vpc/grupo8-flow-logs"
+      + name_prefix                 = (known after apply)
+      + region                      = "us-east-1"
+      + retention_in_days           = 365
+      + skip_destroy                = false
+      + tags_all                    = (known after apply)
+    }
+
+  # module.vpc.aws_default_security_group.default will be created
+  + resource "aws_default_security_group" "default" {
+      + arn                    = (known after apply)
+      + description            = (known after apply)
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "AUY1105-grupo8-default-sg"
+        }
+      + tags_all               = {
+          + "Name" = "AUY1105-grupo8-default-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_flow_log.main will be created
+  + resource "aws_flow_log" "main" {
+      + arn                      = (known after apply)
+      + iam_role_arn             = "arn:aws:iam::519837495726:role/LabRole"
+      + id                       = (known after apply)
+      + log_destination          = (known after apply)
+      + log_destination_type     = "cloud-watch-logs"
+      + log_format               = (known after apply)
+      + max_aggregation_interval = 600
+      + region                   = "us-east-1"
+      + tags_all                 = (known after apply)
+      + traffic_type             = "ALL"
+      + vpc_id                   = (known after apply)
+    }
+
+  # module.vpc.aws_internet_gateway.igw will be created
+  + resource "aws_internet_gateway" "igw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + region   = "us-east-1"
+      + tags     = {
+          + "Name" = "AUY1105-grupo8-igw"
+        }
+      + tags_all = {
+          + "Name" = "AUY1105-grupo8-igw"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.vpc.aws_kms_key.vpc_flow_logs will be created
+  + resource "aws_kms_key" "vpc_flow_logs" {
+      + arn                                = (known after apply)
+      + bypass_policy_lockout_safety_check = false
+      + customer_master_key_spec           = "SYMMETRIC_DEFAULT"
+      + deletion_window_in_days            = 7
+      + description                        = "KMS key para encriptar VPC Flow Logs"
+      + enable_key_rotation                = true
+      + id                                 = (known after apply)
+      + is_enabled                         = true
+      + key_id                             = (known after apply)
+      + key_usage                          = "ENCRYPT_DECRYPT"
+      + multi_region                       = (known after apply)
+      + policy                             = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "kms:*"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "arn:aws:iam::519837495726:root"
+                        }
+                      + Resource  = "*"
+                      + Sid       = "Enable IAM User Permissions"
+                    },
+                  + {
+                      + Action    = [
+                          + "kms:Encrypt",
+                          + "kms:Decrypt",
+                          + "kms:ReEncrypt*",
+                          + "kms:GenerateDataKey*",
+                          + "kms:DescribeKey",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "logs.us-east-1.amazonaws.com"
+                        }
+                      + Resource  = "*"
+                      + Sid       = "Allow CloudWatch Logs"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + region                             = "us-east-1"
+      + rotation_period_in_days            = (known after apply)
+      + tags_all                           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.public will be created
+  + resource "aws_route_table" "public" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + gateway_id                 = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name" = "AUY1105-grupo8-public-rt"
+        }
+      + tags_all         = {
+          + "Name" = "AUY1105-grupo8-public-rt"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.public[0] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.public[1] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_security_group.servers will be created
+  + resource "aws_security_group" "servers" {
+      + arn                    = (known after apply)
+      + description            = "Security Group para servidores con acceso SSH y egreso web"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Permite trafico HTTP saliente"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Permite trafico HTTPS saliente"
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 443
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Acceso HTTP publico"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "SSH publico - requerido en Learner Lab (SSM no disponible)"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "grupo8-servers-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "AUY1105-grupo8-servers-sg"
+        }
+      + tags_all               = {
+          + "Name" = "AUY1105-grupo8-servers-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.public[0] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.1.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Name" = "AUY1105-grupo8-public-subnet-1"
+        }
+      + tags_all                                       = {
+          + "Name" = "AUY1105-grupo8-public-subnet-1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.public[1] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.1.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Name" = "AUY1105-grupo8-public-subnet-2"
+        }
+      + tags_all                                       = {
+          + "Name" = "AUY1105-grupo8-public-subnet-2"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_vpc.main will be created
+  + resource "aws_vpc" "main" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.1.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags                                 = {
+          + "Name" = "AUY1105-grupo8-vpc"
+        }
+      + tags_all                             = {
+          + "Name" = "AUY1105-grupo8-vpc"
+        }
+    }
+
+Plan: 13 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + app1_linux_ips    = [
+      + (known after apply),
+    ]
+  + public_subnet_ids = [
+      + (known after apply),
+      + (known after apply),
+    ]
+  + url_sitio_web     = [
+      + (known after apply),
+    ]
+  + vpc_id            = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+
+
+################################################################
+# 04-ids-aws
+################################################################
+=== SECURITY GROUPS (id | name) ===
+sg-0f5be947ddfe007c1	default
+sg-01efa5c526c4b0180	grupo8-servers-sg
+=== IGW ===
+igw-001cc98e9ff8f0d57
+=== ROUTE TABLES (id | main | subnets asociadas) ===
+rtb-01e4a93ed7bfe416b	True	
+rtb-0ba9b74dd4d8befa2	False	subnet-09d49498013811c10,subnet-0ba39211c155ac664
+=== SUBNETS (id | cidr) ===
+subnet-0ba39211c155ac664	10.1.1.0/24
+subnet-09d49498013811c10	10.1.2.0/24
+=== EC2 (instance id) ===
+i-08f3be98e5cfdca60
+=== LOG GROUP (name | kms arn) ===
+/aws/vpc/grupo8-flow-logs	arn:aws:kms:us-east-1:519837495726:key/6613f2d4-0307-4948-8ac3-ced8438915e6
+=== FLOW LOG (id) ===
+fl-0d26a20101f3e5ce9
+
+
+################################################################
+# 05-imports
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 1s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.aws_subnet.public[0]: Importing from ID "subnet-0ba39211c155ac664"...
+module.vpc.aws_subnet.public[0]: Import prepared!
+  Prepared aws_subnet for import
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.vpc.aws_subnet.public[1]: Importing from ID "subnet-09d49498013811c10"...
+module.vpc.aws_subnet.public[1]: Import prepared!
+  Prepared aws_subnet for import
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.aws_vpc.main: Importing from ID "vpc-0135925743de0929d"...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.aws_vpc.main: Import prepared!
+  Prepared aws_vpc for import
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.aws_default_security_group.default: Importing from ID "sg-0f5be947ddfe007c1"...
+module.vpc.aws_default_security_group.default: Import prepared!
+  Prepared aws_default_security_group for import
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.aws_security_group.servers: Importing from ID "sg-01efa5c526c4b0180"...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.aws_security_group.servers: Import prepared!
+  Prepared aws_security_group for import
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.aws_internet_gateway.igw: Importing from ID "igw-001cc98e9ff8f0d57"...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.aws_internet_gateway.igw: Import prepared!
+  Prepared aws_internet_gateway for import
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.aws_route_table.public: Importing from ID "rtb-0ba9b74dd4d8befa2"...
+module.vpc.aws_route_table.public: Import prepared!
+  Prepared aws_route_table for import
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.aws_route_table_association.public[0]: Importing from ID "subnet-0ba39211c155ac664/rtb-0ba9b74dd4d8befa2"...
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_route_table_association.public[0]: Import prepared!
+  Prepared aws_route_table_association for import
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.aws_route_table_association.public[1]: Importing from ID "subnet-09d49498013811c10/rtb-0ba9b74dd4d8befa2"...
+module.vpc.aws_route_table_association.public[1]: Import prepared!
+  Prepared aws_route_table_association for import
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Importing from ID "6613f2d4-0307-4948-8ac3-ced8438915e6"...
+module.vpc.aws_kms_key.vpc_flow_logs: Import prepared!
+  Prepared aws_kms_key for import
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Importing from ID "/aws/vpc/grupo8-flow-logs"...
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Import prepared!
+  Prepared aws_cloudwatch_log_group for import
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.aws_flow_log.main: Importing from ID "fl-0d26a20101f3e5ce9"...
+module.vpc.aws_flow_log.main: Import prepared!
+  Prepared aws_flow_log for import
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.app1_linux_compute.aws_instance.server[0]: Importing from ID "i-08f3be98e5cfdca60"...
+module.app1_linux_compute.aws_instance.server[0]: Import prepared!
+  Prepared aws_instance for import
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+
+
+
+################################################################
+# 06-state-list
+################################################################
+module.app1_linux_compute.data.aws_ami.ubuntu
+module.app1_linux_compute.aws_instance.server[0]
+module.vpc.data.aws_availability_zones.available
+module.vpc.data.aws_caller_identity.current
+module.vpc.data.aws_iam_role.lab_role
+module.vpc.data.aws_region.current
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs
+module.vpc.aws_default_security_group.default
+module.vpc.aws_flow_log.main
+module.vpc.aws_internet_gateway.igw
+module.vpc.aws_kms_key.vpc_flow_logs
+module.vpc.aws_route_table.public
+module.vpc.aws_route_table_association.public[0]
+module.vpc.aws_route_table_association.public[1]
+module.vpc.aws_security_group.servers
+module.vpc.aws_subnet.public[0]
+module.vpc.aws_subnet.public[1]
+module.vpc.aws_vpc.main
+
+
+################################################################
+# 07-show-vpc
+################################################################
+# module.vpc.aws_vpc.main:
+resource "aws_vpc" "main" {
+    arn                                  = "arn:aws:ec2:us-east-1:519837495726:vpc/vpc-0135925743de0929d"
+    assign_generated_ipv6_cidr_block     = false
+    cidr_block                           = "10.1.0.0/16"
+    default_network_acl_id               = "acl-05167e5daeba7a26f"
+    default_route_table_id               = "rtb-01e4a93ed7bfe416b"
+    default_security_group_id            = "sg-0f5be947ddfe007c1"
+    dhcp_options_id                      = "dopt-0177780ebbd75df34"
+    enable_dns_hostnames                 = true
+    enable_dns_support                   = true
+    enable_network_address_usage_metrics = false
+    id                                   = "vpc-0135925743de0929d"
+    instance_tenancy                     = "default"
+    ipv6_association_id                  = null
+    ipv6_cidr_block                      = null
+    ipv6_cidr_block_network_border_group = null
+    ipv6_ipam_pool_id                    = null
+    ipv6_netmask_length                  = 0
+    main_route_table_id                  = "rtb-01e4a93ed7bfe416b"
+    owner_id                             = "519837495726"
+    region                               = "us-east-1"
+    tags                                 = {
+        "Name" = "AUY1105-grupo8-vpc"
+    }
+    tags_all                             = {
+        "Name" = "AUY1105-grupo8-vpc"
+    }
+}
+
+
+################################################################
+# 08-show-ec2
+################################################################
+# module.app1_linux_compute.aws_instance.server[0]:
+resource "aws_instance" "server" {
+    ami                                  = "ami-0a02a779008fa3b99"
+    arn                                  = "arn:aws:ec2:us-east-1:519837495726:instance/i-08f3be98e5cfdca60"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1a"
+    disable_api_stop                     = false
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    force_destroy                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    host_id                              = null
+    iam_instance_profile                 = "LabInstanceProfile"
+    id                                   = "i-08f3be98e5cfdca60"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_lifecycle                   = null
+    instance_state                       = "running"
+    instance_type                        = "t2.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    key_name                             = "vockey"
+    monitoring                           = true
+    outpost_arn                          = null
+    password_data                        = null
+    placement_group                      = null
+    placement_group_id                   = null
+    placement_partition_number           = 0
+    primary_network_interface_id         = "eni-025e0518b82704eea"
+    private_dns                          = "ip-10-1-1-35.ec2.internal"
+    private_ip                           = "10.1.1.35"
+    public_dns                           = "ec2-54-242-188-191.compute-1.amazonaws.com"
+    public_ip                            = "54.242.188.191"
+    region                               = "us-east-1"
+    secondary_private_ips                = []
+    security_groups                      = []
+    source_dest_check                    = true
+    spot_instance_request_id             = null
+    subnet_id                            = "subnet-0ba39211c155ac664"
+    tags                                 = {
+        "Environment" = "lab"
+        "Name"        = "AUY1105-grupo8-ec2"
+        "OS_Type"     = "linux"
+    }
+    tags_all                             = {
+        "Environment" = "lab"
+        "Name"        = "AUY1105-grupo8-ec2"
+        "OS_Type"     = "linux"
+    }
+    tenancy                              = "default"
+    user_data                            = <<-EOT
+        #!/bin/bash
+        apt-get update -y
+        apt-get install -y nginx git
+        systemctl start nginx
+        systemctl enable nginx
+        git clone --depth 1 https://github.com/BenjaminDuran/AUY1105-Grupo-8-EP2.git /tmp/repo
+        cp -r "/tmp/repo/Sitio Generico/Sitio Generico/html/." /var/www/html/
+        rm -rf /tmp/repo
+    EOT
+    vpc_security_group_ids               = [
+        "sg-01efa5c526c4b0180",
+    ]
+
+    capacity_reservation_specification {
+        capacity_reservation_preference = "open"
+    }
+
+    cpu_options {
+        amd_sev_snp           = null
+        core_count            = 1
+        nested_virtualization = null
+        threads_per_core      = 1
+    }
+
+    credit_specification {
+        cpu_credits = "standard"
+    }
+
+    enclave_options {
+        enabled = false
+    }
+
+    maintenance_options {
+        auto_recovery = "default"
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_protocol_ipv6          = "disabled"
+        http_put_response_hop_limit = 2
+        http_tokens                 = "required"
+        instance_metadata_tags      = "disabled"
+    }
+
+    primary_network_interface {
+        delete_on_termination = true
+        network_interface_id  = "eni-025e0518b82704eea"
+    }
+
+    private_dns_name_options {
+        enable_resource_name_dns_a_record    = false
+        enable_resource_name_dns_aaaa_record = false
+        hostname_type                        = "ip-name"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/sda1"
+        encrypted             = true
+        iops                  = 3000
+        kms_key_id            = "arn:aws:kms:us-east-1:519837495726:key/1d626072-8011-4dac-8f45-2f901073097e"
+        tags                  = {}
+        tags_all              = {}
+        throughput            = 125
+        volume_id             = "vol-0bed0193ad734d368"
+        volume_size           = 8
+        volume_type           = "gp3"
+    }
+}
+
+
+################################################################
+# 09-plan-final
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.vpc.aws_kms_key.vpc_flow_logs will be updated in-place
+  ~ resource "aws_kms_key" "vpc_flow_logs" {
+      + bypass_policy_lockout_safety_check = false
+      + deletion_window_in_days            = 7
+        id                                 = "6613f2d4-0307-4948-8ac3-ced8438915e6"
+        tags                               = {}
+        # (14 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+
+
+################################################################
+# 10-apply-kms
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.vpc.aws_kms_key.vpc_flow_logs will be updated in-place
+  ~ resource "aws_kms_key" "vpc_flow_logs" {
+      + bypass_policy_lockout_safety_check = false
+      + deletion_window_in_days            = 7
+        id                                 = "6613f2d4-0307-4948-8ac3-ced8438915e6"
+        tags                               = {}
+        # (14 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+module.vpc.aws_kms_key.vpc_flow_logs: Modifying... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.aws_kms_key.vpc_flow_logs: Modifications complete after 1s [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+app1_linux_ips = [
+  "54.242.188.191",
+]
+public_subnet_ids = [
+  "subnet-0ba39211c155ac664",
+  "subnet-09d49498013811c10",
+]
+url_sitio_web = [
+  "http://54.242.188.191",
+]
+vpc_id = "vpc-0135925743de0929d"
+
+
+################################################################
+# 11-plan-nochanges
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 1s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 2s [id=LabRole]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
+
+################################################################
+# 12-sg-antes
+################################################################
+# module.vpc.aws_security_group.servers:
+resource "aws_security_group" "servers" {
+    arn         = "arn:aws:ec2:us-east-1:519837495726:security-group/sg-01efa5c526c4b0180"
+    description = "Security Group para servidores con acceso SSH y egreso web"
+    egress      = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "Permite trafico HTTP saliente"
+            from_port        = 80
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 80
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "Permite trafico HTTPS saliente"
+            from_port        = 443
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 443
+        },
+    ]
+    id          = "sg-01efa5c526c4b0180"
+    ingress     = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "Acceso HTTP publico"
+            from_port        = 80
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 80
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "SSH publico - requerido en Learner Lab (SSM no disponible)"
+            from_port        = 22
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 22
+        },
+    ]
+    name        = "grupo8-servers-sg"
+    name_prefix = null
+    owner_id    = "519837495726"
+    region      = "us-east-1"
+    tags        = {
+        "Name" = "AUY1105-grupo8-servers-sg"
+    }
+    tags_all    = {
+        "Name" = "AUY1105-grupo8-servers-sg"
+    }
+    vpc_id      = "vpc-0135925743de0929d"
+}
+
+
+################################################################
+# 13-cambio-manual
+################################################################
+{
+    "Return": true,
+    "SecurityGroupRules": [
+        {
+            "SecurityGroupRuleId": "sgr-0d3954c14bf072d69",
+            "GroupId": "sg-01efa5c526c4b0180",
+            "GroupOwnerId": "519837495726",
+            "IsEgress": false,
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "CidrIpv4": "0.0.0.0/0",
+            "SecurityGroupRuleArn": "arn:aws:ec2:us-east-1:519837495726:security-group-rule/sgr-0d3954c14bf072d69"
+        }
+    ]
+}
+
+
+################################################################
+# 14-plan-drift
+################################################################
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_caller_identity.current: Read complete after 1s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.vpc.aws_security_group.servers will be updated in-place
+  ~ resource "aws_security_group" "servers" {
+        id                     = "sg-01efa5c526c4b0180"
+      ~ ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 443
+                # (1 unchanged attribute hidden)
+            },
+            # (2 unchanged elements hidden)
+        ]
+        name                   = "grupo8-servers-sg"
+      + revoke_rules_on_delete = false
+        tags                   = {
+            "Name" = "AUY1105-grupo8-servers-sg"
+        }
+        # (8 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+
+
+################################################################
+# 15-refresh
+################################################################
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+
+Outputs:
+
+app1_linux_ips = [
+  "54.242.188.191",
+]
+public_subnet_ids = [
+  "subnet-0ba39211c155ac664",
+  "subnet-09d49498013811c10",
+]
+url_sitio_web = [
+  "http://54.242.188.191",
+]
+vpc_id = "vpc-0135925743de0929d"
+
+
+################################################################
+# 16-sg-despues
+################################################################
+# module.vpc.aws_security_group.servers:
+resource "aws_security_group" "servers" {
+    arn         = "arn:aws:ec2:us-east-1:519837495726:security-group/sg-01efa5c526c4b0180"
+    description = "Security Group para servidores con acceso SSH y egreso web"
+    egress      = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "Permite trafico HTTP saliente"
+            from_port        = 80
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 80
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "Permite trafico HTTPS saliente"
+            from_port        = 443
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 443
+        },
+    ]
+    id          = "sg-01efa5c526c4b0180"
+    ingress     = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = null
+            from_port        = 443
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 443
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "Acceso HTTP publico"
+            from_port        = 80
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 80
+        },
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = "SSH publico - requerido en Learner Lab (SSM no disponible)"
+            from_port        = 22
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 22
+        },
+    ]
+    name        = "grupo8-servers-sg"
+    name_prefix = null
+    owner_id    = "519837495726"
+    region      = "us-east-1"
+    tags        = {
+        "Name" = "AUY1105-grupo8-servers-sg"
+    }
+    tags_all    = {
+        "Name" = "AUY1105-grupo8-servers-sg"
+    }
+    vpc_id      = "vpc-0135925743de0929d"
+}
+
+
+################################################################
+# 17-apply-reconcile
+################################################################
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.vpc.aws_security_group.servers will be updated in-place
+  ~ resource "aws_security_group" "servers" {
+        id                     = "sg-01efa5c526c4b0180"
+      ~ ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 443
+                # (1 unchanged attribute hidden)
+            },
+            # (2 unchanged elements hidden)
+        ]
+        name                   = "grupo8-servers-sg"
+      + revoke_rules_on_delete = false
+        tags                   = {
+            "Name" = "AUY1105-grupo8-servers-sg"
+        }
+        # (8 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+module.vpc.aws_security_group.servers: Modifying... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_security_group.servers: Modifications complete after 1s [id=sg-01efa5c526c4b0180]
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+app1_linux_ips = [
+  "54.242.188.191",
+]
+public_subnet_ids = [
+  "subnet-0ba39211c155ac664",
+  "subnet-09d49498013811c10",
+]
+url_sitio_web = [
+  "http://54.242.188.191",
+]
+vpc_id = "vpc-0135925743de0929d"
+
+
+################################################################
+# 18-taint
+################################################################
+Resource instance module.app1_linux_compute.aws_instance.server[0] has been marked as tainted.
+
+
+################################################################
+# 19-plan-replace
+################################################################
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 1s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # module.app1_linux_compute.aws_instance.server[0] is tainted, so must be replaced
+-/+ resource "aws_instance" "server" {
+      ~ arn                                  = "arn:aws:ec2:us-east-1:519837495726:instance/i-08f3be98e5cfdca60" -> (known after apply)
+      ~ associate_public_ip_address          = true -> (known after apply)
+      ~ availability_zone                    = "us-east-1a" -> (known after apply)
+      ~ disable_api_stop                     = false -> (known after apply)
+      ~ disable_api_termination              = false -> (known after apply)
+      ~ ebs_optimized                        = false -> (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      - hibernation                          = false -> null
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      ~ id                                   = "i-08f3be98e5cfdca60" -> (known after apply)
+      ~ instance_initiated_shutdown_behavior = "stop" -> (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      ~ instance_state                       = "running" -> (known after apply)
+      ~ ipv6_address_count                   = 0 -> (known after apply)
+      ~ ipv6_addresses                       = [] -> (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      ~ placement_partition_number           = 0 -> (known after apply)
+      ~ primary_network_interface_id         = "eni-025e0518b82704eea" -> (known after apply)
+      ~ private_dns                          = "ip-10-1-1-35.ec2.internal" -> (known after apply)
+      ~ private_ip                           = "10.1.1.35" -> (known after apply)
+      ~ public_dns                           = "ec2-54-242-188-191.compute-1.amazonaws.com" -> (known after apply)
+      ~ public_ip                            = "54.242.188.191" -> (known after apply)
+      ~ secondary_private_ips                = [] -> (known after apply)
+      ~ security_groups                      = [] -> (known after apply)
+      + spot_instance_request_id             = (known after apply)
+        tags                                 = {
+            "Environment" = "lab"
+            "Name"        = "AUY1105-grupo8-ec2"
+            "OS_Type"     = "linux"
+        }
+      ~ tenancy                              = "default" -> (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+        # (13 unchanged attributes hidden)
+
+      ~ capacity_reservation_specification (known after apply)
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      ~ cpu_options (known after apply)
+      - cpu_options {
+          - core_count            = 1 -> null
+          - threads_per_core      = 1 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      ~ ebs_block_device (known after apply)
+
+      ~ enclave_options (known after apply)
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      ~ ephemeral_block_device (known after apply)
+
+      ~ instance_market_options (known after apply)
+
+      ~ maintenance_options (known after apply)
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      ~ metadata_options {
+          ~ http_put_response_hop_limit = 2 -> (known after apply)
+          ~ instance_metadata_tags      = "disabled" -> (known after apply)
+            # (3 unchanged attributes hidden)
+        }
+
+      ~ network_interface (known after apply)
+
+      ~ primary_network_interface (known after apply)
+      - primary_network_interface {
+          - delete_on_termination = true -> null
+          - network_interface_id  = "eni-025e0518b82704eea" -> null
+        }
+
+      ~ private_dns_name_options (known after apply)
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      ~ root_block_device {
+          ~ device_name           = "/dev/sda1" -> (known after apply)
+          ~ iops                  = 3000 -> (known after apply)
+          ~ kms_key_id            = "arn:aws:kms:us-east-1:519837495726:key/1d626072-8011-4dac-8f45-2f901073097e" -> (known after apply)
+          - tags                  = {} -> null
+          ~ tags_all              = {} -> (known after apply)
+          ~ throughput            = 125 -> (known after apply)
+          ~ volume_id             = "vol-0bed0193ad734d368" -> (known after apply)
+          ~ volume_size           = 8 -> (known after apply)
+          ~ volume_type           = "gp3" -> (known after apply)
+            # (2 unchanged attributes hidden)
+        }
+
+      ~ secondary_network_interface (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  ~ app1_linux_ips    = [
+      ~ "54.242.188.191" -> (known after apply),
+    ]
+  ~ url_sitio_web     = [
+      ~ "http://54.242.188.191" -> (known after apply),
+    ]
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+
+
+################################################################
+# 20-untaint
+################################################################
+Resource instance module.app1_linux_compute.aws_instance.server[0] has been successfully untainted.
+
+
+################################################################
+# 21-plan-nochanges
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 1s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
+
+################################################################
+# 22-taint2
+################################################################
+Resource instance module.app1_linux_compute.aws_instance.server[0] has been marked as tainted.
+
+
+################################################################
+# 23-apply-recreate
+################################################################
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 0s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08f3be98e5cfdca60]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # module.app1_linux_compute.aws_instance.server[0] is tainted, so must be replaced
+-/+ resource "aws_instance" "server" {
+      ~ arn                                  = "arn:aws:ec2:us-east-1:519837495726:instance/i-08f3be98e5cfdca60" -> (known after apply)
+      ~ associate_public_ip_address          = true -> (known after apply)
+      ~ availability_zone                    = "us-east-1a" -> (known after apply)
+      ~ disable_api_stop                     = false -> (known after apply)
+      ~ disable_api_termination              = false -> (known after apply)
+      ~ ebs_optimized                        = false -> (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      - hibernation                          = false -> null
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      ~ id                                   = "i-08f3be98e5cfdca60" -> (known after apply)
+      ~ instance_initiated_shutdown_behavior = "stop" -> (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      ~ instance_state                       = "running" -> (known after apply)
+      ~ ipv6_address_count                   = 0 -> (known after apply)
+      ~ ipv6_addresses                       = [] -> (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      ~ placement_partition_number           = 0 -> (known after apply)
+      ~ primary_network_interface_id         = "eni-025e0518b82704eea" -> (known after apply)
+      ~ private_dns                          = "ip-10-1-1-35.ec2.internal" -> (known after apply)
+      ~ private_ip                           = "10.1.1.35" -> (known after apply)
+      ~ public_dns                           = "ec2-54-242-188-191.compute-1.amazonaws.com" -> (known after apply)
+      ~ public_ip                            = "54.242.188.191" -> (known after apply)
+      ~ secondary_private_ips                = [] -> (known after apply)
+      ~ security_groups                      = [] -> (known after apply)
+      + spot_instance_request_id             = (known after apply)
+        tags                                 = {
+            "Environment" = "lab"
+            "Name"        = "AUY1105-grupo8-ec2"
+            "OS_Type"     = "linux"
+        }
+      ~ tenancy                              = "default" -> (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+        # (13 unchanged attributes hidden)
+
+      ~ capacity_reservation_specification (known after apply)
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      ~ cpu_options (known after apply)
+      - cpu_options {
+          - core_count            = 1 -> null
+          - threads_per_core      = 1 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      ~ ebs_block_device (known after apply)
+
+      ~ enclave_options (known after apply)
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      ~ ephemeral_block_device (known after apply)
+
+      ~ instance_market_options (known after apply)
+
+      ~ maintenance_options (known after apply)
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      ~ metadata_options {
+          ~ http_put_response_hop_limit = 2 -> (known after apply)
+          ~ instance_metadata_tags      = "disabled" -> (known after apply)
+            # (3 unchanged attributes hidden)
+        }
+
+      ~ network_interface (known after apply)
+
+      ~ primary_network_interface (known after apply)
+      - primary_network_interface {
+          - delete_on_termination = true -> null
+          - network_interface_id  = "eni-025e0518b82704eea" -> null
+        }
+
+      ~ private_dns_name_options (known after apply)
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      ~ root_block_device {
+          ~ device_name           = "/dev/sda1" -> (known after apply)
+          ~ iops                  = 3000 -> (known after apply)
+          ~ kms_key_id            = "arn:aws:kms:us-east-1:519837495726:key/1d626072-8011-4dac-8f45-2f901073097e" -> (known after apply)
+          - tags                  = {} -> null
+          ~ tags_all              = {} -> (known after apply)
+          ~ throughput            = 125 -> (known after apply)
+          ~ volume_id             = "vol-0bed0193ad734d368" -> (known after apply)
+          ~ volume_size           = 8 -> (known after apply)
+          ~ volume_type           = "gp3" -> (known after apply)
+            # (2 unchanged attributes hidden)
+        }
+
+      ~ secondary_network_interface (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  ~ app1_linux_ips    = [
+      ~ "54.242.188.191" -> (known after apply),
+    ]
+  ~ url_sitio_web     = [
+      ~ "http://54.242.188.191" -> (known after apply),
+    ]
+module.app1_linux_compute.aws_instance.server[0]: Destroying... [id=i-08f3be98e5cfdca60]
+module.app1_linux_compute.aws_instance.server[0]: Still destroying... [id=i-08f3be98e5cfdca60, 00m10s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Still destroying... [id=i-08f3be98e5cfdca60, 00m20s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Still destroying... [id=i-08f3be98e5cfdca60, 00m30s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Destruction complete after 31s
+module.app1_linux_compute.aws_instance.server[0]: Creating...
+module.app1_linux_compute.aws_instance.server[0]: Still creating... [00m10s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Still creating... [00m20s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Still creating... [00m30s elapsed]
+module.app1_linux_compute.aws_instance.server[0]: Creation complete after 35s [id=i-08eda104624818cc7]
+
+Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
+
+Outputs:
+
+app1_linux_ips = [
+  "54.242.251.62",
+]
+public_subnet_ids = [
+  "subnet-0ba39211c155ac664",
+  "subnet-09d49498013811c10",
+]
+url_sitio_web = [
+  "http://54.242.251.62",
+]
+vpc_id = "vpc-0135925743de0929d"
+
+
+################################################################
+# 24-instancia-nueva
+################################################################
+i-08eda104624818cc7	2026-07-02T04:42:32+00:00
+
+
+################################################################
+# 25-plan-final
+################################################################
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.vpc.data.aws_availability_zones.available: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 1s [id=LabRole]
+module.vpc.data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.vpc.aws_security_group.servers: Refreshing state... [id=sg-01efa5c526c4b0180]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08eda104624818cc7]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
+
+################################################################
+# 26-state-list-con-sg
+################################################################
+module.app1_linux_compute.data.aws_ami.ubuntu
+module.app1_linux_compute.aws_instance.server[0]
+module.vpc.data.aws_availability_zones.available
+module.vpc.data.aws_caller_identity.current
+module.vpc.data.aws_iam_role.lab_role
+module.vpc.data.aws_region.current
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs
+module.vpc.aws_default_security_group.default
+module.vpc.aws_flow_log.main
+module.vpc.aws_internet_gateway.igw
+module.vpc.aws_kms_key.vpc_flow_logs
+module.vpc.aws_route_table.public
+module.vpc.aws_route_table_association.public[0]
+module.vpc.aws_route_table_association.public[1]
+module.vpc.aws_security_group.servers
+module.vpc.aws_subnet.public[0]
+module.vpc.aws_subnet.public[1]
+module.vpc.aws_vpc.main
+
+
+################################################################
+# 27-state-rm
+################################################################
+Removed module.vpc.aws_security_group.servers
+Successfully removed 1 resource instance(s).
+
+
+################################################################
+# 28-state-list-sin-sg
+################################################################
+module.app1_linux_compute.data.aws_ami.ubuntu
+module.app1_linux_compute.aws_instance.server[0]
+module.vpc.data.aws_availability_zones.available
+module.vpc.data.aws_caller_identity.current
+module.vpc.data.aws_iam_role.lab_role
+module.vpc.data.aws_region.current
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs
+module.vpc.aws_default_security_group.default
+module.vpc.aws_flow_log.main
+module.vpc.aws_internet_gateway.igw
+module.vpc.aws_kms_key.vpc_flow_logs
+module.vpc.aws_route_table.public
+module.vpc.aws_route_table_association.public[0]
+module.vpc.aws_route_table_association.public[1]
+module.vpc.aws_subnet.public[0]
+module.vpc.aws_subnet.public[1]
+module.vpc.aws_vpc.main
+
+
+################################################################
+# 29-diff-codigo
+################################################################
+diff --git a/main.tf b/main.tf
+index 9d83fd3..1d4bba5 100644
+--- a/main.tf
++++ b/main.tf
+@@ -22,8 +22,8 @@ module "app1_linux_compute" {
+   project_name = var.project_name
+   # Ponemos la instancia en la primera subred pública
+   subnet_id = module.vpc.public_subnet_ids[0]
+-  # Security Group de servidores provisto por el módulo de redes
+-  security_group_ids = [module.vpc.servers_security_group_id]
++  # SG gestionado fuera de Terraform (removido del estado en Escenario 3 EP3); se referencia por ID
++  security_group_ids = ["sg-01efa5c526c4b0180"]
+   os_type            = "linux"
+   instance_count     = var.instance_count_app1
+   key_name           = var.key_name
+diff --git a/modules/vpc/main.tf b/modules/vpc/main.tf
+index 7b01299..ceb004e 100644
+--- a/modules/vpc/main.tf
++++ b/modules/vpc/main.tf
+@@ -131,53 +131,3 @@ resource "aws_route_table_association" "public" {
+   subnet_id      = aws_subnet.public[count.index].id
+   route_table_id = aws_route_table.public.id
+ }
+-
+-# 7. Security Group de servidores
+-# Acceso web (HTTP) y SSH entrante; egreso web para repositorios/paquetes.
+-resource "aws_security_group" "servers" {
+-  #checkov:skip=CKV_AWS_24:Puerto 22 habilitado para acceso SSH directo - SSM no disponible en AWS Learner Lab
+-  #checkov:skip=CKV2_AWS_5:El SG se adjunta a la instancia EC2 via output del modulo redes y el modulo compute; Checkov no rastrea el grafo entre modulos
+-  name        = "${var.project_name}-servers-sg"
+-  description = "Security Group para servidores con acceso SSH y egreso web"
+-  vpc_id      = aws_vpc.main.id
+-
+-  # Tráfico web (Nginx)
+-  ingress {
+-    #checkov:skip=CKV_AWS_260:Puerto 80 habilitado para todo el publico, para verificar pagina web
+-    description = "Acceso HTTP publico"
+-    from_port   = 80
+-    to_port     = 80
+-    protocol    = "tcp"
+-    cidr_blocks = ["0.0.0.0/0"]
+-  }
+-
+-  ingress {
+-    description = "SSH publico - requerido en Learner Lab (SSM no disponible)"
+-    from_port   = 22
+-    to_port     = 22
+-    protocol    = "tcp"
+-    cidr_blocks = ["0.0.0.0/0"]
+-  }
+-
+-  # HTTPS - repositorios seguros
+-  egress {
+-    description = "Permite trafico HTTPS saliente"
+-    from_port   = 443
+-    to_port     = 443
+-    protocol    = "tcp"
+-    cidr_blocks = ["0.0.0.0/0"]
+-  }
+-
+-  # HTTP - repositorios de paquetes
+-  egress {
+-    description = "Permite trafico HTTP saliente"
+-    from_port   = 80
+-    to_port     = 80
+-    protocol    = "tcp"
+-    cidr_blocks = ["0.0.0.0/0"]
+-  }
+-
+-  tags = {
+-    Name = "AUY1105-${var.project_name}-servers-sg"
+-  }
+-}
+diff --git a/modules/vpc/outputs.tf b/modules/vpc/outputs.tf
+index 3507139..10b347c 100644
+--- a/modules/vpc/outputs.tf
++++ b/modules/vpc/outputs.tf
+@@ -7,9 +7,4 @@ output "public_subnet_ids" {
+   description = "Lista de IDs de las subredes públicas creadas"
+   # Esto genera una lista con los IDs de todas las subredes creadas por el "count"
+   value = aws_subnet.public[*].id
+-}
+-
+-output "servers_security_group_id" {
+-  description = "ID del Security Group de servidores (HTTP/SSH entrante, egreso web)"
+-  value       = aws_security_group.servers.id
+ }
+\ No newline at end of file
+
+
+################################################################
+# 30-sg-vivo-aws
+################################################################
+SECURITYGROUPS	Security Group para servidores con acceso SSH y egreso web	sg-01efa5c526c4b0180	grupo8-servers-sg	519837495726	arn:aws:ec2:us-east-1:519837495726:security-group/sg-01efa5c526c4b0180	vpc-0135925743de0929d
+IPPERMISSIONS	80	tcp	80
+IPRANGES	0.0.0.0/0	Acceso HTTP publico
+IPPERMISSIONS	22	tcp	22
+IPRANGES	0.0.0.0/0	SSH publico - requerido en Learner Lab (SSM no disponible)
+IPPERMISSIONSEGRESS	80	tcp	80
+IPRANGES	0.0.0.0/0	Permite trafico HTTP saliente
+IPPERMISSIONSEGRESS	443	tcp	443
+IPRANGES	0.0.0.0/0	Permite trafico HTTPS saliente
+TAGS	Name	AUY1105-grupo8-servers-sg
+
+
+################################################################
+# 31-plan-final
+################################################################
+module.vpc.data.aws_availability_zones.available: Reading...
+module.vpc.data.aws_region.current: Reading...
+module.vpc.data.aws_caller_identity.current: Reading...
+module.vpc.data.aws_iam_role.lab_role: Reading...
+module.app1_linux_compute.data.aws_ami.ubuntu: Reading...
+module.vpc.aws_vpc.main: Refreshing state... [id=vpc-0135925743de0929d]
+module.vpc.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_caller_identity.current: Read complete after 0s [id=519837495726]
+module.vpc.aws_kms_key.vpc_flow_logs: Refreshing state... [id=6613f2d4-0307-4948-8ac3-ced8438915e6]
+module.vpc.data.aws_availability_zones.available: Read complete after 0s [id=us-east-1]
+module.vpc.data.aws_iam_role.lab_role: Read complete after 0s [id=LabRole]
+module.app1_linux_compute.data.aws_ami.ubuntu: Read complete after 1s [id=ami-0a02a779008fa3b99]
+module.vpc.aws_cloudwatch_log_group.vpc_flow_logs: Refreshing state... [id=/aws/vpc/grupo8-flow-logs]
+module.vpc.aws_internet_gateway.igw: Refreshing state... [id=igw-001cc98e9ff8f0d57]
+module.vpc.aws_default_security_group.default: Refreshing state... [id=sg-0f5be947ddfe007c1]
+module.vpc.aws_flow_log.main: Refreshing state... [id=fl-0d26a20101f3e5ce9]
+module.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-0ba39211c155ac664]
+module.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-09d49498013811c10]
+module.app1_linux_compute.aws_instance.server[0]: Refreshing state... [id=i-08eda104624818cc7]
+module.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ba9b74dd4d8befa2]
+module.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0966f6a7af84a5641]
+module.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b93064ccea8d48f5]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
